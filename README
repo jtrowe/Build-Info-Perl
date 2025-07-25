@@ -1,0 +1,27 @@
+Build-Info-Perl version 0.1.0
+=============================
+
+Some Perl tooling to collection build information.
+
+There are several end goals:
+
+- to eventually be semi-compatible with Artifactory build info
+- generate a Perl module for a given project so the build
+  information can be used programmatically
+- generate POD for the Perl module to ease use of the build information
+
+SEE ALSO
+
+- https://github.com/jfrog/build-info
+
+COPYRIGHT AND LICENCE
+
+Put the correct copyright and licence information here.
+
+Copyright (C) 2025 by Joshua T. Rowe
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.30.3 or,
+at your option, any later version of Perl 5 you may have available.
+
+
