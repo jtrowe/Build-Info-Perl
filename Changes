@@ -1,0 +1,7 @@
+Revision history for Perl extension Build::Info::Perl.
+
+0.1.0    2025-07-25T18:04:10+00:00
+    - original version; created by h2xs 1.23 with options
+        -AX --skip-exporter --use-new-tests -n Build::Info::Perl
+    - with some manual cleanups
+
