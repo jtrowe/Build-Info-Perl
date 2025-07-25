@@ -5,3 +5,5 @@ Revision history for Perl extension Build::Info::Perl.
         -AX --skip-exporter --use-new-tests -n Build::Info::Perl
     - with some manual cleanups
 
+0.1.1    2025-07-26T23:38:40+00:00
+    - Add Build::Info::Perl

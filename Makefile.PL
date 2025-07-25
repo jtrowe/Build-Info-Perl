@@ -6,5 +6,7 @@ WriteMakefile(
     ABSTRACT_FROM     => 'lib/Build/Info/Perl.pm',
     AUTHOR            => 'Joshua T. Rowe <jrowe@home.jrowe.org>',
     LICENSE           => 'perl',
-	PREREQ_PM         => {},
+	PREREQ_PM         => {
+		'Exporter' => 0,
+	},
 );
