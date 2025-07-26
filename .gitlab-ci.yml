@@ -1,0 +1,31 @@
+
+default:
+  image: perl:5.30
+
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - ./*.gz
+  script:
+    - perl Makefile.PL
+    - make
+    - make test
+    - make dist
+
+deploy:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+  stage: deploy
+  pages: true
+  dependencies:
+    - test
+  script:
+    - mkdir public
+    - cp -a *.gz public/
+    - perl ci/bin/generate-project-page.pl > public/index.html
