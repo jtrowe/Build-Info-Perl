@@ -132,7 +132,7 @@ sub generate_build_info_exports {
             }
 
             print $out join("\n",
-                '    ),',
+                '    ) ],',
                 '',
             );
 
