@@ -17,7 +17,7 @@ our @EXPORT_OK = qw(
     generate_build_info_vars
 );
 
-our $VERSION = '0.1.1';
+our $VERSION = '0.2.0';
 
 
 my %DESC = (
