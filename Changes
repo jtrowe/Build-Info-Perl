@@ -1,6 +1,8 @@
 Revision history for Perl extension Build::Info::Perl.
 
-next     date
+0.3.0    2025-07-27T19:39:25+00:00
+    - Release 0.2.0
+      https://gitlab.com/jtrowe/build-info-perl/-/issues/13
 
 0.2.0    2025-07-27T05:26:55+00:00
     - Fix order of Changes
