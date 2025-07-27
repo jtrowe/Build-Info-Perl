@@ -3,6 +3,8 @@ Revision history for Perl extension Build::Info::Perl.
 next     date
     - Fix order of Changes
       https://gitlab.com/jtrowe/build-info-perl/-/issues/7
+    - Add script to generate build info
+      https://gitlab.com/jtrowe/build-info-perl/-/issues/6
 
 0.1.1    2025-07-26T23:38:40+00:00
     - Add Build::Info::Perl

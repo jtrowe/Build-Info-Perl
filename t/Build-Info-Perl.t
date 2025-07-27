@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 8;
+use Test::More tests => 9;
 
 BEGIN {
     my @exports = qw(
@@ -143,7 +143,7 @@ subtest "generate_build_info_vars" => sub {
 };
 
 
-subtest "generate_build_info" => sub {
+subtest "generate_build_info w/ tags" => sub {
     plan(tests => 1);
 
     my $buffer;
@@ -169,6 +169,33 @@ subtest "generate_build_info" => sub {
         out     => $out,
         package => 'Bar::BuildInfo',
         tags    => \%tags,
+    );
+
+    close $out;
+
+    ok(length($buffer), 'Generated some text')
+            or note("out.length => " . length($buffer));
+    note("out:\n" . $buffer);
+
+};
+
+
+subtest "generate_build_info w/o tags" => sub {
+    plan(tests => 1);
+
+    my $buffer;
+    open(my $out, '>', \$buffer);
+
+    my %env = (
+        VERSION => '1.2.3',
+    );
+
+    generate_build_info(
+        env     => \%env,
+        module  => 'Bar',
+        out     => $out,
+        package => 'Bar::BuildInfo',
+        vars    => [ keys %env ],
     );
 
     close $out;

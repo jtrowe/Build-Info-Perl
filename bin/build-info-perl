@@ -1,0 +1,45 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Build::Info::Perl qw(
+    $VERSION
+    generate_build_info
+);
+use File::Basename;
+use File::Path qw( mkpath );
+
+
+my $module  = shift @ARGV // die 'argument module is missing';
+my $package = shift @ARGV // die 'argument package is missing';
+my $file    = shift @ARGV;
+
+my $out;
+if ( $file ) {
+    # NB: use legacy interface from before v2.00
+    mkpath(dirname($file));
+    open $out, '>', $file or die "Cannot write file $file: $!";
+}
+else {
+    $out = \*STDOUT;
+}
+
+my %env = (
+    VERSION => "$Build::Info::Perl::VERSION",
+);
+
+my @vars = keys %env;
+
+generate_build_info(
+    env     => \%env,
+    module  => $module,
+    out     => $out,
+    package => $package,
+    vars    => \@vars,
+);
+
+if ( $file ) {
+    close $out;
+}
+

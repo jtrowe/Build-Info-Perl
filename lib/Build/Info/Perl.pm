@@ -35,6 +35,16 @@ sub generate_build_info {
     my $tags    = $param{tags};
     my $vars    = $param{vars};
 
+    unless ( $tags || $vars ) {
+        die 'parameters tags and vars cannot both be undef';
+    }
+
+    unless ( scalar(keys %{ $tags } ) || scalar(@{ $vars // [] }) ) {
+        die 'parameters tags or vars must have a least one entry';
+    }
+
+    $tags //= {};
+
     generate_build_info_header(
         module  => $module,
         out     => $out,
