@@ -1,6 +1,9 @@
+Build-Info.PL
 Changes
 Makefile.PL
 MANIFEST
 README
+bin/build-info-perl
 lib/Build/Info/Perl.pm
+lib/Build/Info/Perl/BuildInfo.pm
 t/Build-Info-Perl.t
