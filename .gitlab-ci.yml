@@ -13,7 +13,9 @@ test:
     paths:
       - ./*.gz
   script:
+    - cpanm App::mymeta_requires
     - perl Makefile.PL
+    - mymeta-requires | cpanm
     - make
     - make test
     - make dist

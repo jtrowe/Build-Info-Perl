@@ -5,6 +5,8 @@ Revision history for Perl extension Build::Info::Perl.
       https://gitlab.com/jtrowe/build-info-perl/-/issues/13
     - Fix syntax for %EXPORT_TAGS in generated file
       https://gitlab.com/jtrowe/build-info-perl/-/issues/11
+    - Collect environment variables
+      https://gitlab.com/jtrowe/build-info-perl/-/issues/9
 
 0.2.0    2025-07-27T05:26:55+00:00
     - Fix order of Changes

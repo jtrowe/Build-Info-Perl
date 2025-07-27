@@ -1,10 +1,14 @@
 use strict;
 use warnings;
 
-use Test::More tests => 9;
+use Data::Dumper;
+
+use Test::More tests => 11;
+use Test::Deep;
 
 BEGIN {
     my @exports = qw(
+        collect_env
         generate_build_info
         generate_build_info_exports
         generate_build_info_footer
@@ -14,6 +18,51 @@ BEGIN {
     );
 
     use_ok('Build::Info::Perl' => @exports );
+};
+
+$Data::Dumper::Sortkeys = 1;
+
+
+subtest "collect_env" => sub {
+    plan(tests => 1);
+
+    my %env = (
+        CI            => 'true',
+        CI_COMMIT_SHA => 'fa1d3547c18cf6b42dae80d52c66a3e4eba3d47f',
+        GITLAB_CI     => 'true',
+    );
+
+    my $rules = [
+        {
+            pattern => qr/_?CI_?/,
+            tag     => 'ci',
+        },
+        {
+            pattern => qr/_?GITLAB_?/,
+            tag     => 'gitlab',
+        },
+    ];
+
+    my $tags = collect_env(
+        rules => $rules,
+        env   => \%env,
+    );
+
+    my $exp = {
+        ci => [ qw(
+            CI
+            CI_COMMIT_SHA
+            GITLAB_CI
+        ) ],
+        gitlab => [ qw(
+            GITLAB_CI
+        ) ],
+    };
+
+    cmp_deeply($tags, $exp, 'Got expected tags');
+    note("tags:\n" . Dumper($tags));
+
+
 };
 
 
@@ -42,6 +91,34 @@ subtest "generate_build_info_exports" => sub {
         out  => $out,
         tags => \%tags,
         vars => $vars,
+    );
+
+    close $out;
+
+    ok(length($buffer), 'Generated some text')
+            or note("out.length => " . length($buffer));
+    note("out:\n" . $buffer);
+
+};
+
+
+subtest "generate_build_info_exports via collect_env" => sub {
+    plan(tests => 1);
+
+    my $buffer;
+    open(my $out, '>', \$buffer);
+
+    my %env = (
+        VERSION => '1.2.3',
+    );
+
+    my $tags = collect_env(
+        env => \%env,
+    );
+
+    generate_build_info_exports(
+        out  => $out,
+        tags => $tags,
     );
 
     close $out;

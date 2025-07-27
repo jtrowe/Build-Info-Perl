@@ -10,6 +10,7 @@ WriteMakefile(
 		'Exporter'       => 0,
 		'File::Basename' => 0,
 		'File::Path'     => 0,
+		'Test::Deep'     => 0,
 	},
 	EXE_FILES         => [
 		'bin/build-info-perl',

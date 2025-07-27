@@ -9,6 +9,7 @@ use Exporter qw( import );
 our @EXPORT_OK = qw(
     $VERSION
 
+    collect_env
     generate_build_info
     generate_build_info_exports
     generate_build_info_footer
@@ -24,6 +25,59 @@ my %DESC = (
     VERSION => 'The version of the module.',
 );
 
+my @RULES = (
+    {
+        pattern => qr/_?GITLAB_?/,
+        tag     => 'gitlab',
+    },
+    {
+        pattern => qr/_?GIT?/,
+        tag     => 'git',
+    },
+    {
+        pattern => qr/_?CI_?/,
+        tag     => 'ci',
+    },
+    {
+        pattern => qr/_?LOG_?/,
+        tag     => 'log',
+    },
+    {
+        pattern => qr/_?SHELL?/,
+        tag     => 'shell',
+    },
+    {
+        pattern => qr/_?VERSION?/,
+        tag     => 'version',
+    },
+);
+
+sub collect_env {
+    my %param  = @_;
+    my $env    = $param{env}   // \%ENV,
+    my $rules  = $param{rules} // \@RULES,
+
+    my %tags;
+
+    foreach my $var ( keys %{ $env } ) {
+        foreach my $r ( @{ $rules } ) {
+            my $pattern = $r->{pattern};
+            my $tag     = $r->{tag};
+
+            if ( $var =~ $pattern ) {
+                $tags{$tag}->{$var} = 1;
+            }
+        }
+    }
+
+    foreach my $tag ( keys %tags ) {
+        my $hash = delete $tags{$tag};
+        $tags{$tag} = [ sort keys %{ $hash } ],
+    }
+
+    return \%tags;
+}
+
 
 sub generate_build_info {
     my %param   = @_;
@@ -32,8 +86,16 @@ sub generate_build_info {
     my $module  = $param{module}  // die 'parameter module is undef';
     my $out     = $param{out}     // die 'parameter out is undef';
     my $package = $param{package} // die 'parameter package is undef';
+    my $rules   = $param{rules};
     my $tags    = $param{tags};
     my $vars    = $param{vars};
+
+    my $collected = collect_env(
+        env   => $env,
+        rules => $rules,
+    );
+
+    $tags //= $collected;
 
     unless ( $tags || $vars ) {
         die 'parameters tags and vars cannot both be undef';
@@ -150,7 +212,11 @@ sub generate_build_info_exports {
         '',
     );
 
-    foreach my $item ( sort( keys(%all), @vars ) ) {
+    my %ok_all = (
+        %all,
+        map { $_ => 1 } @vars,
+    );
+    foreach my $item ( sort keys %ok_all ) {
         print $out join("\n",
             sprintf('    $%s', $item),
             '',
