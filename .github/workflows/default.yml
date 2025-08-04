@@ -1,7 +1,7 @@
 name: Default
 on: [push]
 jobs:
-  show.env:
+  show-env:
     runs-on: debian-latest
     steps:
       - run: export
