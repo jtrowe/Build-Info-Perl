@@ -35,6 +35,10 @@ my @RULES = (
         pattern => qr/PASSWORD/,
     },
     {
+        pattern => qr/_?GITHUB?/,
+        tag     => 'github',
+    },
+    {
         pattern => qr/_?GITLAB_?/,
         tag     => 'gitlab',
     },
@@ -49,6 +53,10 @@ my @RULES = (
     {
         pattern => qr/_?LOG_?/,
         tag     => 'log',
+    },
+    {
+        pattern => qr/_?RUNNER?/,
+        tag     => 'runner',
     },
     {
         pattern => qr/_?SHELL?/,
