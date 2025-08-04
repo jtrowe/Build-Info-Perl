@@ -27,6 +27,14 @@ my %DESC = (
 
 my @RULES = (
     {
+        exclude => 1,
+        pattern => qr/CI_JOB_TOKEN/,
+    },
+    {
+        exclude => 1,
+        pattern => qr/PASSWORD/,
+    },
+    {
         pattern => qr/_?GITLAB_?/,
         tag     => 'gitlab',
     },
@@ -59,13 +67,23 @@ sub collect_env {
 
     my %tags;
 
-    foreach my $var ( keys %{ $env } ) {
+    foreach my $var ( sort keys %{ $env } ) {
+
+        RULES:
         foreach my $r ( @{ $rules } ) {
+            my $exclude = $r->{exclude} // 0;
             my $pattern = $r->{pattern};
             my $tag     = $r->{tag};
+$tag //= '';
 
             if ( $var =~ $pattern ) {
-                $tags{$tag}->{$var} = 1;
+                if ( $exclude ) {
+                    last RULES;
+                }
+
+                unless ( $exclude ) {
+                    $tags{$tag}->{$var} = 1;
+                }
             }
         }
     }

@@ -3,7 +3,7 @@ use warnings;
 
 use Data::Dumper;
 
-use Test::More tests => 11;
+use Test::More tests => 12;
 use Test::Deep;
 
 BEGIN {
@@ -33,6 +33,60 @@ subtest "collect_env" => sub {
     );
 
     my $rules = [
+        {
+            pattern => qr/_?CI_?/,
+            tag     => 'ci',
+        },
+        {
+            pattern => qr/_?GITLAB_?/,
+            tag     => 'gitlab',
+        },
+    ];
+
+    my $tags = collect_env(
+        rules => $rules,
+        env   => \%env,
+    );
+
+    my $exp = {
+        ci => [ qw(
+            CI
+            CI_COMMIT_SHA
+            GITLAB_CI
+        ) ],
+        gitlab => [ qw(
+            GITLAB_CI
+        ) ],
+    };
+
+    cmp_deeply($tags, $exp, 'Got expected tags');
+    note("tags:\n" . Dumper($tags));
+
+
+};
+
+
+subtest "collect_env w/ excludes" => sub {
+    plan(tests => 1);
+
+    my %env = (
+        CI            => 'true',
+        CI_COMMIT_SHA => 'fa1d3547c18cf6b42dae80d52c66a3e4eba3d47f',
+        CI_JOB_TOKEN  => 'foo',
+        CI_PASSWORD   => 'foobaz',
+        GITLAB_CI     => 'true',
+        PASSWORD      => 'foobar',
+    );
+
+    my $rules = [
+        {
+            exclude => 1,
+            pattern => qr/CI_JOB_TOKEN/,
+        },
+        {
+            exclude => 1,
+            pattern => qr/PASSWORD/,
+        },
         {
             pattern => qr/_?CI_?/,
             tag     => 'ci',
