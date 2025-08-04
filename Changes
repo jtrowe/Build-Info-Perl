@@ -3,6 +3,8 @@ Revision history for Perl extension Build::Info::Perl.
 0.4.0    2025-08-04T02:21:44+00:00
     - Release 0.4.0
       https://gitlab.com/jtrowe/build-info-perl/-/issues/15
+    - Show value as "" for empty values in POD
+      https://gitlab.com/jtrowe/build-info-perl/-/issues/17
 
 0.3.0    2025-07-27T19:39:25+00:00
     - Release 0.3.0

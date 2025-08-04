@@ -294,7 +294,7 @@ sub generate_build_info_var {
     my %param = @_;
     my $desc  = $param{desc} // '';
     my $out   = $param{out}  // die 'parameter out is undef';
-    my $val   = $param{val}  // die 'parameter val is undef';
+    my $val   = $param{val}  || '""';
     my $var   = $param{var}  // die 'parameter var is undef';
 
     my @desc;
