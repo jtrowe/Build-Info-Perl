@@ -6,7 +6,7 @@ jobs:
     steps:
       - run: export
       - run: perl -v
-      - run: apt update && apt install cpanminus
+      - run: sudo apt update && sudo apt install cpanminus
       - run: cpanm App::mymeta_requires
       - run: perl Makefile.PL
       - run: mymeta-requires | cpanm
