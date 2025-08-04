@@ -1,8 +1,13 @@
 name: Default
 on: [push]
 jobs:
-  show-env:
+  test:
     runs-on: ubuntu-latest
     steps:
       - run: export
-          
+      - run: cpanm App::mymeta_requires
+      - run: perl Makefile.PL
+      - run: mymeta-requires | cpanm
+      - run: make
+      - run: make test
+      - run: make dist
