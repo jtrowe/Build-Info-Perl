@@ -47,7 +47,7 @@ my @RULES = (
         tag     => 'shell',
     },
     {
-        pattern => qr/_?VERSION?/,
+        pattern => qr/_?VERSION_?/,
         tag     => 'version',
     },
 );
